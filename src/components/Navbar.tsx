@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav className="shadow-sm sticky top-0 left-0 z-50 bg-white">
         <div className="h-[80px] w-full flex justify-between items-center max-w-7xl px-3 mx-auto">
-            <p className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2">
                 <h2 className="text-gray-500 text-3xl">Weather App</h2>
                 <Image 
                     src={weatherSvg}
@@ -17,7 +17,7 @@ export default function Navbar() {
                     height={50}
                     className="mt-1"
                 />
-            </p>
+            </div>
             {/*      */}
             <section className="flex gap-2 items-center">
                 <Image 
@@ -29,7 +29,7 @@ export default function Navbar() {
                 />
                 <p className="text-slate-900/80 text-sm">Germany</p>
                 <div>
-                    <SearchBox />
+                    <SearchBox value={""} onChange={undefined} onSubmit={undefined} />
                 </div>
             </section>
         </div>
