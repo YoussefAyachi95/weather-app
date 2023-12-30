@@ -133,10 +133,20 @@ export default function Home() {
                   </div>
               </Container>
             </div>
+            <div className="flex gap-4">
+                  <Container className="w-fit justify-center flex-col px-4 items-center">
+                    <p className="capitalize text-center">
+                      {firstData?.weather[0].description}
+                    </p>
+                    <WeatherIcon condition={firstData?.weather[0].main as WeatherCondition} />
+                  </Container>       
+            </div>
           </section>
           {/* 7 DAYS FORECAST */}
-          <section className="flex w-full">
-            <p></p>
+          <section className="flex w-full flex-col gap-4">
+            <p className="text-2xl">
+              Forecast (7 days)
+            </p>
           </section>
       </main>
     </div>
