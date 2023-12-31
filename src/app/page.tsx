@@ -1,6 +1,7 @@
 "use client"
 
 import Container from '@/components/Container';
+import ForecastDetail from '@/components/ForecastDetail';
 import Navbar from '@/components/Navbar'
 import WeatherDetails from '@/components/WeatherDetails';
 import WeatherIcon, { WeatherCondition } from '@/components/WeatherIcon';
@@ -78,7 +79,20 @@ export default function Home() {
 
   const firstData = data?.list[0]
 
-  console.log(data)
+
+  const uniqueDates = [
+    ...new Set(
+      data?.list.map((entry) => new Date(entry.dt * 1000).toISOString().split("T")[0])
+    )
+  ]
+
+  const firstDataForEachDate = uniqueDates.map((date) => {
+    return data?.list.find((entry) => {
+      const entryDate = new Date(entry.dt * 1000).toISOString().split("T")[0];
+      const entryTime = new Date(entry.dt * 1000).getHours();
+      return entryDate === date && entryTime >= 6;
+    })
+  })
 
   if (isLoading) return (
     <div className="flex items-center min-h-screen justify-center">
@@ -168,6 +182,33 @@ export default function Home() {
             <p className="text-2xl">
               Forecast (7 days)
             </p>
+            {
+              firstDataForEachDate.map((d) => (
+                <ForecastDetail 
+                  key={d?.weather[0].id}
+                  condition={d?.weather[0].main as WeatherCondition}
+                  date={format(parseISO(d?.dt_txt ?? ""), "dd.MM")}
+                  day={format(parseISO(d?.dt_txt ?? ""), "EEEE")}
+                  feels_like={d?.main.feels_like ?? 0}
+                  temp={d?.main.temp ?? 0}
+                  temp_max={d?.main.temp_max ?? 0}
+                  temp_min={d?.main.temp_min ?? 0}
+                  description={d?.weather[0].description ?? ""}
+                  visibility={toKM(d?.visibility ?? 10000)} 
+                  humidity={`${d?.main.humidity} %`}
+                  windSpeed={convertWindSpeed(d?.wind.speed ?? 1.64)}
+                  airPressure={`${d?.main.pressure} hPa`}
+                  sunrise={format(
+                    fromUnixTime(data?.city.sunrise ?? 1704008013),
+                    "H:mm"
+                  )}
+                  sunset={format(
+                    fromUnixTime(data?.city.sunset ?? 1704036895),
+                    "H:mm"
+                  )}
+                />
+              ))
+            }
           </section>
       </main>
     </div>
