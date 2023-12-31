@@ -2,10 +2,13 @@
 
 import Container from '@/components/Container';
 import Navbar from '@/components/Navbar'
+import WeatherDetails from '@/components/WeatherDetails';
 import WeatherIcon, { WeatherCondition } from '@/components/WeatherIcon';
+import { convertWindSpeed } from '@/utils/convertWindSpeed';
 import { toCelsius } from '@/utils/toCelsius';
+import { toKM } from '@/utils/toKM';
 import axios from 'axios';
-import { format, parseISO } from 'date-fns';
+import { format, fromUnixTime, parseISO } from 'date-fns';
 import { useQuery } from 'react-query';
 
 interface WeatherData {
@@ -134,12 +137,30 @@ export default function Home() {
               </Container>
             </div>
             <div className="flex gap-4">
+              {/* LEFT CONTAINER */}
                   <Container className="w-fit justify-center flex-col px-4 items-center">
                     <p className="capitalize text-center">
                       {firstData?.weather[0].description}
                     </p>
                     <WeatherIcon condition={firstData?.weather[0].main as WeatherCondition} />
-                  </Container>       
+                  </Container>
+              {/* RIGHT CONTAINER */}
+                  <Container className="bg-yellow-400/80 px-6 gap-4 justify-between">
+                        <WeatherDetails
+                          visibility={toKM(firstData?.visibility ?? 10000)} 
+                          humidity={`${firstData?.main.humidity} %`}
+                          windSpeed={convertWindSpeed(firstData?.wind.speed ?? 1.64)}
+                          airPressure={`${firstData?.main.pressure} hPa`}
+                          sunrise={format(
+                            fromUnixTime(data?.city.sunrise ?? 1704008013),
+                            "H:mm"
+                          )}
+                          sunset={format(
+                            fromUnixTime(data?.city.sunset ?? 1704036895),
+                            "H:mm"
+                          )}
+                          />
+                  </Container>      
             </div>
           </section>
           {/* 7 DAYS FORECAST */}
