@@ -8,7 +8,7 @@ import currentLocationSvg from '../../public/currentLocation.svg'
 import SearchBox from "./SearchBox"
 import SuggestionBox from "./SuggestionBox"
 import { useAtom } from "jotai"
-import { placeAtom } from "@/app/atom"
+import { loadingCityAtom, placeAtom } from "@/app/atom"
 
 type Props = { location? :  string }
 
@@ -21,6 +21,7 @@ export default function Navbar({
     const [suggestions, setSuggestions] = useState<string[]>([])
     const [showSuggestions, setShowSuggestions] = useState(false)
     const [place, setPlace] = useAtom(placeAtom)
+    const [_, setLoadingPlace] = useAtom(loadingCityAtom)
 
     async function handleInputChange(value: string) {
         setCity(value)
@@ -51,14 +52,19 @@ export default function Navbar({
     }
 
     function handleSubmitSearch (e: React.FormEvent<HTMLFormElement>) {
+        setLoadingPlace(true)
         e.preventDefault()
 
         if(suggestions.length === 0) {
             setError("Location not found")
+            setLoadingPlace(false)
         } else {
             setError("")
-            setPlace(city)
-            setShowSuggestions(false)
+            setTimeout(() => {
+                setLoadingPlace(false)
+                setPlace(city)
+                setShowSuggestions(false)
+            }, 500)
         }
     }
 
