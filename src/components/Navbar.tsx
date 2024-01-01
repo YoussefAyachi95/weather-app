@@ -7,13 +7,20 @@ import weatherSvg from '../../public/weatherIcon.svg'
 import currentLocationSvg from '../../public/currentLocation.svg'
 import SearchBox from "./SearchBox"
 import SuggestionBox from "./SuggestionBox"
+import { useAtom } from "jotai"
+import { placeAtom } from "@/app/atom"
+
+type Props = { location? :  string }
 
 
-export default function Navbar() {
+export default function Navbar({
+    location
+}: Props) {
     const [city, setCity] = useState("")
     const [error, setError] = useState("")
     const [suggestions, setSuggestions] = useState<string[]>([])
     const [showSuggestions, setShowSuggestions] = useState(false)
+    const [place, setPlace] = useAtom(placeAtom)
 
     async function handleInputChange(value: string) {
         setCity(value)
@@ -50,6 +57,7 @@ export default function Navbar() {
             setError("Location not found")
         } else {
             setError("")
+            setPlace(city)
             setShowSuggestions(false)
         }
     }
@@ -76,7 +84,7 @@ export default function Navbar() {
                         height={40}
                         className="hover:opacity-80 cursor-pointer"
                     />
-                    <p className="text-slate-900/80 text-sm">Germany</p>
+                    <p className="text-slate-900/80 text-sm">{location}</p>
                     <div className="relative">
                         <SearchBox value={city} onChange={(e) => handleInputChange(e.target.value)} onSubmit={handleSubmitSearch} />
                         <SuggestionBox {...{showSuggestions, suggestions, handleSuggestionClick, error}} />
