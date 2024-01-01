@@ -94,6 +94,7 @@ export default function Home() {
     })
   })
 
+
   if (isLoading) return (
     <div className="flex items-center min-h-screen justify-center">
       <p className="animate-bounce">
@@ -185,7 +186,7 @@ export default function Home() {
             {
               firstDataForEachDate.map((d) => (
                 <ForecastDetail 
-                  key={d?.weather[0].id}
+                  key={d?.main.feels_like}
                   condition={d?.weather[0].main as WeatherCondition}
                   date={format(parseISO(d?.dt_txt ?? ""), "dd.MM")}
                   day={format(parseISO(d?.dt_txt ?? ""), "EEEE")}
