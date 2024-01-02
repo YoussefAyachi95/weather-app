@@ -104,6 +104,7 @@ export default function Navbar({
                     <section className="flex gap-2 items-center">
                         <Image 
                             title="Your current location"
+                            id="geolocationButton"
                             onClick={handleCurrentLocation}
                             src={currentLocationSvg}
                             alt="Location SVG"

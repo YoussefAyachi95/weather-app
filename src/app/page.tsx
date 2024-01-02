@@ -117,10 +117,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-4 bg-gray-100 min-h-screen">
-      <Navbar location={data?.city.name} />
+      <Navbar location={data?.city.name}/>
       <main className="px-3 max-w-7xl mx-auto flex flex-col gap-9 w-full pb-10 pt-4">
         { loadingCity  ?  (<WeatherSkeleton />) : (
-          <>
+          <div className="weather-data">
             <section className="space-y-4">
               <div className="space-y-2">
                 <h2 className="flex gap-1 text-2xl items-end">
@@ -225,7 +225,7 @@ export default function Home() {
                 ))
               }
             </section>
-          </>
+          </div>
         )}
 
       </main>
